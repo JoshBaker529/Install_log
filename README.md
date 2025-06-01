@@ -14,6 +14,3 @@ YYYY-MM-DD <package> <description>
 
 By default, saves to ~/.installs.txt 
 ```
-```
-```
-```
