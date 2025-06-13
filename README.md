@@ -1,6 +1,7 @@
 # INSTALL LOG
 Simple logger to keep track of installs via a package manager. 
 
+# In the process of converting to C++ (Simply because I'm more comfortable using it)
 ```
 ./install_log.sh [-l] [<package> <description>]
 ```
@@ -13,3 +14,4 @@ YYYY-MM-DD <package> <description>
 ```
 
 By default, saves to ~/.installs.txt 
+
