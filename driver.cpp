@@ -1,0 +1,88 @@
+// This is essentially the same thing as the install_log.sh, but written in C++
+// for ease of access
+
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
+using std::cout;
+#include <fstream>
+using std::ifstream, std::ofstream;
+#include "Settings.h"
+
+struct Entry {};
+
+int main(int argc, char *argv[]) {
+
+  // No args
+  if (argc == 1) {
+    cout << "Usage: " << argv[0]
+         << " [-h|-l|-r|-o] <package name> <description>\n"
+            "For more information, use: "
+         << argv[0] << " -h";
+    return 0;
+  }
+
+  // There is at least one arg
+
+  if (strcmp(argv[1], "help") == 0) {
+    cout << "Default usage: " << argv[0] << " <package name> <description>\n";
+    cout << "Options:\n"
+            "\t-h\tShows help menu\n\n"
+            "\t-l\tLists all entries\n\n"
+            "\t-r\tRemoves an entry\n"
+            "\t\tArguments: <package name>\n\n"
+            "\t-o\tForce adds to list "
+            "(for the extremely slim chance a package has the same name as an "
+            "option)\n"
+            "\t\tArguments: <package name> <description>\n";
+    return 0;
+  }
+
+  // Auto loads settings
+  Settings settings;
+
+  if (strcmp(argv[1], "-l") == 0) {
+    ifstream inFile;
+    inFile.open(settings.getPath());
+
+    if (!inFile) {
+      cout << "Error loading file";
+      return -1;
+    }
+
+    string line;
+    while (!inFile.eof()) {
+      std::getline(inFile, line, '\n');
+      cout << line << "\n";
+    }
+    inFile.close();
+    return 0;
+  }
+
+  if (strcmp(argv[1], "-r") == 0) {
+    // Do stuff
+    return 0;
+  }
+
+  if (strcmp(argv[1], "-o") == 0) {
+    // Do stuff
+    return 0;
+  }
+
+  // At this point, we don't have any arguments
+
+  ofstream outFile;
+  outFile.open(settings.getPath(), std::ios::app);
+  if (!outFile) {
+    cout << "Error loading file";
+    return -1;
+  }
+  outFile << argv[1] << ": ";
+  for (int i = 2; i < argc; i++) {
+    outFile << argv[i] << " ";
+  }
+  outFile << "\n";
+  outFile.close();
+
+  return 0;
+}
