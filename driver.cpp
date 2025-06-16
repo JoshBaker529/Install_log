@@ -5,20 +5,33 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+using std::cout;
 #include <sstream>
 #include <string>
-using std::cout;
+using std::string;
 #include <fstream>
 using std::ifstream, std::ofstream;
-#include "Settings.h"
+#include <cstdlib>
 #include <ctime>
+#include <filesystem>
+using std::filesystem::path;
 
-struct Entry {};
+std::string getHomeDirectory() {
+#ifdef _WIN32
+  const char *homeDir = std::getenv("USERPROFILE");
+#else
+  const char *homeDir = std::getenv("HOME");
+#endif
+  if (homeDir) {
+    return homeDir;
+  }
+  return ""; // Return empty string if not found
+}
 
 int main(int argc, char *argv[]) {
 
-  // cout << "Date: " << date.tm_mon + 1 << "/" << date.tm_mday << "/"
-  //    << date.tm_year + 1990 << "\n";
+  path file = path(getHomeDirectory());
+  file.append(".install_log.txt");
 
   // No args
   if (argc == 1) {
@@ -45,12 +58,9 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
-  // Auto loads settings
-  Settings settings;
-
   if (strcmp(argv[1], "-l") == 0) {
     ifstream inFile;
-    inFile.open(settings.getPath());
+    inFile.open(file);
 
     if (!inFile) {
       cout << "Error loading file";
@@ -71,7 +81,7 @@ int main(int argc, char *argv[]) {
       cout << "Usage: " << argv[0] << "-r <package name>";
     }
     ifstream inFile;
-    inFile.open(settings.getPath());
+    inFile.open(file);
     if (!inFile) {
       cout << "Error loading file";
       return -1;
@@ -86,7 +96,7 @@ int main(int argc, char *argv[]) {
     inFile.close();
 
     ofstream outFile;
-    outFile.open(settings.getPath());
+    outFile.open(file);
     if (!outFile) {
       cout << "Error loading file";
       return -1;
@@ -122,7 +132,7 @@ int main(int argc, char *argv[]) {
   if (strcmp(argv[1], "-o") == 0) {
 
     ofstream outFile;
-    outFile.open(settings.getPath(), std::ios::app);
+    outFile.open(file, std::ios::app);
     if (!outFile) {
       cout << "Error loading file";
       return -1;
@@ -140,7 +150,7 @@ int main(int argc, char *argv[]) {
   // At this point, we don't have any arguments
 
   ofstream outFile;
-  outFile.open(settings.getPath(), std::ios::app);
+  outFile.open(file, std::ios::app);
   if (!outFile) {
     cout << "Error loading file";
     return -1;
@@ -154,3 +164,13 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
+
+/* int main() {
+    std::string homeDir = getHomeDirectory();
+    if (!homeDir.empty()) {
+        std::cout << "Home directory: " << homeDir << std::endl;
+    } else {
+        std::cout << "Home directory not found." << std::endl;
+    }
+    return 0;
+}*/
