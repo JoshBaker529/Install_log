@@ -113,11 +113,11 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
-  // Code for getting the date in MM/DD/YYYY format
+  // Code for getting the date in YYYY/MM/DD format
   time_t timestamp = time(NULL);
   struct tm datetime = *localtime(&timestamp);
   char date[11];
-  std::strftime(date, 11, "%m/%d/%Y", &datetime);
+  std::strftime(date, 11, "%Y/%m/%d", &datetime);
 
   if (strcmp(argv[1], "-o") == 0) {
 
