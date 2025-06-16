@@ -2,7 +2,7 @@
 CC:= g++
 CFLAGS := -std=c++17 -Wall
 OUT := log
-FILES := driver.cpp Settings.h Settings.cpp
+FILES := driver.cpp
 
 all: $(OUT)
 
