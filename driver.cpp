@@ -63,6 +63,9 @@ int main(int argc, char *argv[]) {
   }
 
   if (strcmp(argv[1], "-r") == 0) {
+    if (argc != 3) {
+      cout << "Usage: " << argv[0] << "-r <package name>";
+    }
     ifstream inFile;
     inFile.open(settings.getPath());
     if (!inFile) {
@@ -84,13 +87,22 @@ int main(int argc, char *argv[]) {
       cout << "Error loading file";
       return -1;
     }
+    bool found = false;
     while (sstream /* >> date */ >> name) {
       std::getline(sstream, desc);
       name[name.length() - 1] = '\0';
       if (std::strcmp(name.c_str(), argv[2]) == 0) {
+        found = true;
         continue;
       }
       outFile /* << date << " " */ << name << ": " << desc << "\n";
+    }
+
+    if (found) {
+      cout << argv[2] << " removed from log.";
+    } else {
+      cout << argv[2]
+           << " not found. Please make sure the package name is correct.";
     }
 
     outFile.close();
