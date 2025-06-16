@@ -3,7 +3,7 @@
 # Change this to modify where the file is stored.
 # For some reason, I needed to split this up??
 FILE_DIR=$HOME
-FILE_NAME=.installs.txt
+FILE_NAME=.install_log.txt
 
 # Tests if file is created, if not, create it.
 if [ ! -f $FILE_DIR/$FILE_NAME ]; then
