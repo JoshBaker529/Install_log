@@ -11,10 +11,14 @@ using std::cout;
 #include <fstream>
 using std::ifstream, std::ofstream;
 #include "Settings.h"
+#include <ctime>
 
 struct Entry {};
 
 int main(int argc, char *argv[]) {
+
+  // cout << "Date: " << date.tm_mon + 1 << "/" << date.tm_mday << "/"
+  //    << date.tm_year + 1990 << "\n";
 
   // No args
   if (argc == 1) {
@@ -27,7 +31,7 @@ int main(int argc, char *argv[]) {
 
   // There is at least one arg
 
-  if (strcmp(argv[1], "help") == 0) {
+  if (strcmp(argv[1], "-h") == 0) {
     cout << "Default usage: " << argv[0] << " <package name> <description>\n";
     cout << "Options:\n"
             "\t-h\tShows help menu\n\n"
@@ -88,14 +92,14 @@ int main(int argc, char *argv[]) {
       return -1;
     }
     bool found = false;
-    while (sstream /* >> date */ >> name) {
+    while (sstream >> date >> name) {
       std::getline(sstream, desc);
       name[name.length() - 1] = '\0';
       if (std::strcmp(name.c_str(), argv[2]) == 0) {
         found = true;
         continue;
       }
-      outFile /* << date << " " */ << name << ":" << desc << "\n";
+      outFile << date << " " << name << ":" << desc << "\n";
     }
 
     if (found) {
@@ -109,6 +113,12 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
+  // Code for getting the date in MM/DD/YYYY format
+  time_t timestamp = time(NULL);
+  struct tm datetime = *localtime(&timestamp);
+  char date[11];
+  std::strftime(date, 11, "%m/%d/%Y", &datetime);
+
   if (strcmp(argv[1], "-o") == 0) {
 
     ofstream outFile;
@@ -117,7 +127,7 @@ int main(int argc, char *argv[]) {
       cout << "Error loading file";
       return -1;
     }
-    outFile << argv[2] << ": ";
+    outFile << date << " " << argv[2] << ": ";
     for (int i = 3; i < argc; i++) {
       outFile << argv[i] << " ";
     }
@@ -135,7 +145,7 @@ int main(int argc, char *argv[]) {
     cout << "Error loading file";
     return -1;
   }
-  outFile << argv[1] << ": ";
+  outFile << date << " " << argv[1] << ": ";
   for (int i = 2; i < argc; i++) {
     outFile << argv[i] << " ";
   }
