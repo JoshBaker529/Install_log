@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
         found = true;
         continue;
       }
-      outFile /* << date << " " */ << name << ": " << desc << "\n";
+      outFile /* << date << " " */ << name << ":" << desc << "\n";
     }
 
     if (found) {
@@ -110,7 +110,20 @@ int main(int argc, char *argv[]) {
   }
 
   if (strcmp(argv[1], "-o") == 0) {
-    // Do stuff
+
+    ofstream outFile;
+    outFile.open(settings.getPath(), std::ios::app);
+    if (!outFile) {
+      cout << "Error loading file";
+      return -1;
+    }
+    outFile << argv[2] << ": ";
+    for (int i = 3; i < argc; i++) {
+      outFile << argv[i] << " ";
+    }
+    outFile << "\n";
+    outFile.close();
+
     return 0;
   }
 
