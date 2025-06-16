@@ -29,7 +29,6 @@ std::string getHomeDirectory() {
 }
 
 int main(int argc, char *argv[]) {
-
   path file = path(getHomeDirectory());
   file.append(".install_log.txt");
 
