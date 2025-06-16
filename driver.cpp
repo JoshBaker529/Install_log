@@ -1,9 +1,12 @@
 // This is essentially the same thing as the install_log.sh, but written in C++
 // for ease of access
 
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <sstream>
+#include <string>
 using std::cout;
 #include <fstream>
 using std::ifstream, std::ofstream;
@@ -60,7 +63,37 @@ int main(int argc, char *argv[]) {
   }
 
   if (strcmp(argv[1], "-r") == 0) {
-    // Do stuff
+    ifstream inFile;
+    inFile.open(settings.getPath());
+    if (!inFile) {
+      cout << "Error loading file";
+      return -1;
+    }
+    std::stringstream sstream;
+    string date, name, desc, line;
+
+    while (!inFile.eof()) {
+      std::getline(inFile, line);
+      sstream << line << "\n";
+    }
+    inFile.close();
+
+    ofstream outFile;
+    outFile.open(settings.getPath());
+    if (!outFile) {
+      cout << "Error loading file";
+      return -1;
+    }
+    while (sstream /* >> date */ >> name) {
+      std::getline(sstream, desc);
+      name[name.length() - 1] = '\0';
+      if (std::strcmp(name.c_str(), argv[2]) == 0) {
+        continue;
+      }
+      outFile /* << date << " " */ << name << ": " << desc << "\n";
+    }
+
+    outFile.close();
     return 0;
   }
 
