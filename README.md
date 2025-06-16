@@ -16,9 +16,12 @@ The default command is ` ./log <package name> <description> `. This will add an 
 
 ## Modifiers
 `-h`: Shows the help menu.
+
 `-l`: Prints entire log file to console.
+
 `-r <package name>`: Removes a package from the log.
+
 `-o`: Skips any checks for flags, and follows the same format as the default command (For the extremely slim chance a package has the same name as one of the modifiers).
 
-The log file is stored in `~/install_log.txt`, if manual modification of the file is required.
+The log file is stored in `~/.install_log.txt`, if manual modification of the file is required.
 
